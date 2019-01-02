@@ -1,0 +1,22 @@
+ArduinoLibs.xml
+---------------------
+
+
+
+ArduinoCore.xml
+----------------
+
+
+
+
+MidiTemplate.xml
+----------------
+
+
+
+
+HALSources.xml
+----------------
+C:\Users\marshall>openocd -f "E:\github\stm32f769i-disco_projects\examples\Blinker\usbDebug.cfg" -c "init; reset halt"
+
+C:/STM32/gcc-arm-none-eabi/bin/arm-none-eabi-gdb -x gdbinit.txt build/output.elf

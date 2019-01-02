@@ -1,0 +1,4 @@
+handle SIGINT
+target ext:3333
+load
+break hal_main.c:140
