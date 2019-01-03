@@ -146,6 +146,10 @@ $(PROJECT_OBJECTS) \
 $(ARDUINO_OBJECTS) \
 $(HAL_OBJECTS)
 
+%.d: ;
+
+include $(patsubst %,%.d,$(basename $(OBJECTS)))
+
 # linker
 $(BUILD_DIR)/output.elf: $(OBJECTS) Makefile
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $(TARGET_EXEC)
@@ -196,8 +200,10 @@ info:
 	@echo
 	@echo "***** ***** ***** OBJECTS ***** ***** *****"
 	@echo $(OBJECTS)
-	@echo	
-
+	@echo
+	@echo "***** ***** ***** WHATISTHIS ***** ***** *****"
+	@echo $(WHATISTHIS)
+	@echo
 #######################################
 # clean up
 #######################################
