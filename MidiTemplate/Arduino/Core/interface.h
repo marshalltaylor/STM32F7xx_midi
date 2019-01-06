@@ -7,6 +7,8 @@
 //#include "stm32f7xx_it.h"
 //#include "stm32f7xx_hal_uart.h"
 
+extern UART_HandleTypeDef huart6;
+
 void delay(uint32_t delayInput);
 
 #endif

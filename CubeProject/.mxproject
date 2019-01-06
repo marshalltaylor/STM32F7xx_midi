@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/CPDevBoard/projects/AudioTemplateSpawnMakefile/Inc
+HeaderPath=E:/github/STM32F7xx_midi/CubeProject/Inc
 HeaderFiles=usb_device.h;usbd_conf.h;usbd_desc.h;usbd_cdc_if.h;stm32f7xx_it.h;stm32f7xx_hal_conf.h;main.h;
-SourcePath=C:/CPDevBoard/projects/AudioTemplateSpawnMakefile/Src
+SourcePath=E:/github/STM32F7xx_midi/CubeProject/Src
 SourceFiles=usb_device.c;usbd_conf.c;usbd_desc.c;usbd_cdc_if.c;stm32f7xx_it.c;stm32f7xx_hal_msp.c;stm32f7xx_hal_timebase_TIM.c;main.c;
 
 [PreviousLibFiles]

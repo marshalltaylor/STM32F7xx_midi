@@ -120,7 +120,7 @@ void BlinkErrorCode( uint32_t time )
 }
 
 /* USER CODE END 0 */
-const char myData[] = "Test Data\n";
+uint8_t myData[] = "Test Data\n";
 /**
   * @brief  The application entry point.
   *
@@ -163,7 +163,7 @@ int hal_main(void)
   //__HAL_UART_ENABLE_IT(&huart6, UART_IT_TC);
   //SET_BIT(huart6.Instance->CR1, USART_CR1_TCIE);
   //const char myData[] = "hello world!\n";
-  if(HAL_UART_Transmit_DMA(&huart6, &myData, sizeof(myData))!= HAL_OK)
+  if(HAL_UART_Transmit_DMA(&huart6, myData, sizeof(myData))!= HAL_OK)
   {
     BlinkErrorCode(250);
   }
@@ -210,9 +210,47 @@ static void MX_USART6_UART_Init(void)
 
 }
 
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+/**
+  * @brief  Tx Transfer completed callback
+  * @param  UartHandle: UART handle. 
+  * @note   This example shows a simple way to report end of DMA Tx transfer, and 
+  *         you can add your own implementation. 
+  * @retval None
+  */
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
-	BlinkErrorCode(50);
+  /* Set transmission flag: trasfer complete*/
+  //UartReady = SET;
+BlinkErrorCode(500);
+  
+}
+
+/**
+  * @brief  Rx Transfer completed callback
+  * @param  UartHandle: UART handle
+  * @note   This example shows a simple way to report end of DMA Rx transfer, and 
+  *         you can add your own implementation.
+  * @retval None
+  */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
+{
+  /* Set transmission flag: trasfer complete*/
+  //UartReady = SET;
+BlinkErrorCode(500);
+  
+}
+
+/**
+  * @brief  UART error callbacks
+  * @param  UartHandle: UART handle
+  * @note   This example shows a simple way to report transfer error, and you can
+  *         add your own implementation.
+  * @retval None
+  */
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
+{
+    Error_Handler();
+	BlinkErrorCode(10);
 }
 /** 
   * Enable DMA controller clock
@@ -230,9 +268,10 @@ static void MX_DMA_Init(void)
   HAL_NVIC_SetPriority(DMA2_Stream6_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream6_IRQn);
 
-  /* NVIC for USART, to catch the TX complete */
-  HAL_NVIC_SetPriority(USART6_IRQn, 0, 1);
-  HAL_NVIC_EnableIRQ(USART6_IRQn);
+  //done in msp
+  ///* NVIC for USART, to catch the TX complete */
+  //HAL_NVIC_SetPriority(USART6_IRQn, 0, 1);
+  //HAL_NVIC_EnableIRQ(USART6_IRQn);
 }
 
 /**

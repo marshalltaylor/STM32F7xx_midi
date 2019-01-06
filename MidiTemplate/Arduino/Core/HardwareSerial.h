@@ -28,6 +28,9 @@
 
 #include "Stream.h"
 
+#include "interface.h"
+extern UART_HandleTypeDef huart6;
+
 // Define constants and variables for buffering incoming serial data.  We're
 // using a ring buffer (I think), in which head is the index of the location
 // to which to write the next incoming character and tail is the index of the

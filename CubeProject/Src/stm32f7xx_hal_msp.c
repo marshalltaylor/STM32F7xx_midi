@@ -327,7 +327,10 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     hdma_usart6_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_usart6_rx.Init.Mode = DMA_NORMAL;
     hdma_usart6_rx.Init.Priority = DMA_PRIORITY_LOW;
-    hdma_usart6_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    hdma_usart6_rx.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
+    hdma_usart6_rx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
+    hdma_usart6_rx.Init.MemBurst = DMA_MBURST_SINGLE;
+    hdma_usart6_rx.Init.PeriphBurst = DMA_PBURST_SINGLE;
     if (HAL_DMA_Init(&hdma_usart6_rx) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
@@ -345,7 +348,10 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     hdma_usart6_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_usart6_tx.Init.Mode = DMA_NORMAL;
     hdma_usart6_tx.Init.Priority = DMA_PRIORITY_LOW;
-    hdma_usart6_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    hdma_usart6_tx.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
+    hdma_usart6_tx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
+    hdma_usart6_tx.Init.MemBurst = DMA_MBURST_SINGLE;
+    hdma_usart6_tx.Init.PeriphBurst = DMA_PBURST_SINGLE;
     if (HAL_DMA_Init(&hdma_usart6_tx) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
@@ -353,6 +359,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 
     __HAL_LINKDMA(huart,hdmatx,hdma_usart6_tx);
 
+    /* USART6 interrupt Init */
+    HAL_NVIC_SetPriority(USART6_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(USART6_IRQn);
   /* USER CODE BEGIN USART6_MspInit 1 */
 
   /* USER CODE END USART6_MspInit 1 */
@@ -380,6 +389,9 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
     /* USART6 DMA DeInit */
     HAL_DMA_DeInit(huart->hdmarx);
     HAL_DMA_DeInit(huart->hdmatx);
+
+    /* USART6 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(USART6_IRQn);
   /* USER CODE BEGIN USART6_MspDeInit 1 */
 
   /* USER CODE END USART6_MspDeInit 1 */
