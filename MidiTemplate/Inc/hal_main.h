@@ -94,6 +94,7 @@ extern DMA_HandleTypeDef hdma_usart6_tx;
 
 int hal_main(void);
 void HAL_SYSTICK_Callback(void);
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 int millis();
 void _Error_Handler(char *, int);
 

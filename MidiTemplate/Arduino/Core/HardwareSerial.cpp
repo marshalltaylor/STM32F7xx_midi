@@ -228,9 +228,12 @@ size_t HardwareSerial::write(uint8_t c)
 {
   _written = true;
 
-  HAL_UART_Transmit(&huart6, &c, 1, 4000);
+  //HAL_UART_Transmit(&huart6, &c, 1, 4000);
   //HAL_UART_Transmit_IT(&huart6, &c, 1);
-
+  uint8_t * output = (uint8_t *)malloc(1);
+  *output = c;
+  HAL_UART_Transmit_DMA(&huart6, output, 1);
+  
 //  tx_buffer_index_t i = (_serial.tx_head + 1) % SERIAL_TX_BUFFER_SIZE;
 //
 //  // If the output buffer is full, there's nothing for it other than to
