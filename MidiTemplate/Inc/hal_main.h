@@ -56,7 +56,7 @@
 /* USER CODE BEGIN Includes */
 //#include "stm32f7xx_hal_dfsdm.h"
 //#include "stm32f7xx_hal.h"
-
+#include <stdint.h>
 //
 //extern DFSDM_Channel_HandleTypeDef hdfsdm1_channel1;
 //extern DFSDM_Channel_HandleTypeDef hdfsdm1_channel5;
@@ -98,6 +98,7 @@ void HAL_SYSTICK_Callback(void);
 //void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 int millis();
 void _Error_Handler(char *, int);
+void BlinkErrorCode( uint32_t time );
 
 #define Error_Handler() _Error_Handler(__FILE__, __LINE__)
 #ifdef __cplusplus
