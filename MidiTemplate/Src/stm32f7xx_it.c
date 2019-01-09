@@ -34,6 +34,7 @@
 #include "stm32f7xx_hal.h"
 #include "stm32f7xx.h"
 #include "stm32f7xx_it.h"
+#include "hal_main.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -43,6 +44,7 @@
 extern PCD_HandleTypeDef hpcd_USB_OTG_HS;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern DMA_HandleTypeDef hdma_usart6_tx;
+extern UART_HandleTypeDef huart6;
 
 extern TIM_HandleTypeDef htim1;
 
@@ -251,7 +253,40 @@ void OTG_HS_IRQHandler(void)
   /* USER CODE END OTG_HS_IRQn 1 */
 }
 
-/* USER CODE BEGIN 1 */
+///**
+//  * @brief  This function handles DMA interrupt request.  
+//  * @param  None
+//  * @retval None
+//  * @Note   This function is redefined in "main.h" and related to DMA  
+//  *         used for USART data transmission     
+//  */
+//void USART6_DMA_RX_IRQHandler(void)
+//{
+//  HAL_DMA_IRQHandler(huart6.hdmarx);
+//}
+//
+///**
+//  * @brief  This function handles DMA interrupt request.
+//  * @param  None
+//  * @retval None
+//  * @Note   This function is redefined in "main.h" and related to DMA  
+//  *         used for USART data reception    
+//  */
+//void USART6_DMA_TX_IRQHandler(void)
+//{
+//  HAL_DMA_IRQHandler(huart6.hdmatx);
+//}
 
-/* USER CODE END 1 */
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+/**
+  * @brief  This function handles UART interrupt request.  
+  * @param  None
+  * @retval None
+  * @Note   This function is redefined in "main.h" and related to DMA  
+  *         used for USART data transmission     
+  */
+void USART6_IRQHandler(void)
+{
+	//BlinkErrorCode(50);
+  HAL_UART_IRQHandler(&huart6);
+}

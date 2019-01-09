@@ -57,7 +57,7 @@ PROJECT_INCLUDES = $(PROJECT_C_INCLUDES) $(ARDUINO_INCLUDES)
 #######################################
 # c
 #  -DUSE_HAL_DRIVER -DSTM32F7xx 
-CFLAGS = -v -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -DSTM32F7xx '-D__weak=__attribute__((weak))' '-D__packed=__attribute__((__packed__))' -DSTM32F769xx -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0
+CFLAGS = -v -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -DSTM32F7xx '-D__weak=__attribute__((weak))' '-D__packed=__attribute__((__packed__))' -DSTM32F769xx -g3 -O0 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
@@ -72,8 +72,8 @@ CFLAGS += -fmax-errors=1
 # assembler
 ASFLAGS = -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -g
 
-# linker
-LDFLAGS = -v -lc -g -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -specs=nosys.specs -specs=nano.specs -T$(LINKER_FILE) -Wl,-Map=$(BUILD_DIR)/output.map -Wl,--gc-sections -lm
+# linker -lstdc++ -lsupc++ 
+LDFLAGS = -v -lc -g -lm -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -specs=nosys.specs -specs=nano.specs -T$(LINKER_FILE) -Wl,-Map=$(BUILD_DIR)/output.map -Wl,--gc-sections
 
 # binaries
 HEX = $(CP) -O ihex
@@ -152,7 +152,7 @@ include $(patsubst %,%.d,$(basename $(OBJECTS)))
 
 # linker
 $(BUILD_DIR)/output.elf: $(OBJECTS) Makefile
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $(TARGET_EXEC)
+	$(PP) $(LDFLAGS) $(OBJECTS) -o $(TARGET_EXEC)
 	$(SZ) $@
 	@echo
 	@echo

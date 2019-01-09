@@ -47,6 +47,8 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#include <stdint.h>
+#include <stdbool.h>
 #include "hal_main.h"
 #include "stm32f7xx_hal.h"
 #include "usb_device.h"
@@ -67,10 +69,6 @@ SAI_HandleTypeDef hsai_BlockB1;
 
 MMC_HandleTypeDef hmmc2;
 
-UART_HandleTypeDef huart6;
-DMA_HandleTypeDef hdma_usart6_rx;
-DMA_HandleTypeDef hdma_usart6_tx;
-
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 volatile uint32_t SYSTICK_VALUE;
@@ -84,7 +82,6 @@ static void MX_SAI1_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_DFSDM1_Init(void);
 static void MX_SDMMC2_MMC_Init(void);
-static void MX_USART6_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -119,8 +116,7 @@ void BlinkErrorCode( uint32_t time )
 	}
 }
 
-/* USER CODE END 0 */
-const char myData[] = "Test Data\n";
+
 /**
   * @brief  The application entry point.
   *
@@ -151,10 +147,10 @@ int hal_main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_SAI1_Init();
-  MX_I2C1_Init();
+  //MX_SAI1_Init();
+  //MX_I2C1_Init();
   MX_DFSDM1_Init();
-  MX_USB_DEVICE_Init();
+  //MX_USB_DEVICE_Init();
   //MX_SDMMC2_MMC_Init();  //Enabling this causes a crash
   MX_USART6_UART_Init();
  //HAL_MspInit();
@@ -163,10 +159,7 @@ int hal_main(void)
   //__HAL_UART_ENABLE_IT(&huart6, UART_IT_TC);
   //SET_BIT(huart6.Instance->CR1, USART_CR1_TCIE);
   //const char myData[] = "hello world!\n";
-  if(HAL_UART_Transmit_DMA(&huart6, &myData, sizeof(myData))!= HAL_OK)
-  {
-    BlinkErrorCode(250);
-  }
+
   //BlinkErrorCode(1000);
   //HAL_UART_Transmit_DMA(&huart6, &myData, sizeof(myData));
   //HAL_UART_Transmit_DMA(&huart6, &myData, sizeof(myData));
@@ -189,31 +182,6 @@ int hal_main(void)
 
 }
 
-/* USART6 init function */
-static void MX_USART6_UART_Init(void)
-{
-
-  huart6.Instance = USART6;
-  huart6.Init.BaudRate = 115200;
-  huart6.Init.WordLength = UART_WORDLENGTH_8B;
-  huart6.Init.StopBits = UART_STOPBITS_1;
-  huart6.Init.Parity = UART_PARITY_NONE;
-  huart6.Init.Mode = UART_MODE_TX_RX;
-  huart6.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart6.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart6.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart6.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart6) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-}
-
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
-	BlinkErrorCode(50);
-}
 /** 
   * Enable DMA controller clock
   */
@@ -230,9 +198,10 @@ static void MX_DMA_Init(void)
   HAL_NVIC_SetPriority(DMA2_Stream6_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream6_IRQn);
 
-  /* NVIC for USART, to catch the TX complete */
-  HAL_NVIC_SetPriority(USART6_IRQn, 0, 1);
-  HAL_NVIC_EnableIRQ(USART6_IRQn);
+  //done in msp
+  ///* NVIC for USART, to catch the TX complete */
+  //HAL_NVIC_SetPriority(USART6_IRQn, 0, 1);
+  //HAL_NVIC_EnableIRQ(USART6_IRQn);
 }
 
 /**

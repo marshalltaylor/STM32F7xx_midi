@@ -2,6 +2,8 @@ CUBE_PROJECT_DIR = ../CubeProject
 
 HAL_C_SOURCES = \
 ./Src/hal_main.c \
+./Src/unused_int.c \
+./Src/hal_uart.c \
 ./Src/system_stm32f7xx.c \
 ./Src/stm32f7xx_it.c \
 ./Src/stm32f7xx_hal_msp.c \
@@ -49,7 +51,9 @@ $(CUBE_PROJECT_DIR)/Middlewares/ST/STM32_USB_Device_Library/Core/Inc \
 $(CUBE_PROJECT_DIR)/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
 
 PROJECT_C_SOURCES = \
-./Src/main.cpp
+./Src/main.cpp \
+./Src/sketch.cpp \
+./Src/BlinkerPanel.cpp
 
 PROJECT_C_INCLUDES = \
 ./Inc

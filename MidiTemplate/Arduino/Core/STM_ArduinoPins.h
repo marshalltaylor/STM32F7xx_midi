@@ -118,6 +118,13 @@ extern "C"{
 #define D27 27
 #define D28 28
 
+#define A0 D16 // A0
+#define A1 D17 // A1
+#define A2 D18 // A2
+#define A3 D19 // A3
+#define A4 D20 // A4
+#define A5 D21 // A5
+
 #ifdef __cplusplus
 }
 #endif

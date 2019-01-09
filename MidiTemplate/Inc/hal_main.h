@@ -55,22 +55,22 @@
 
 /* USER CODE BEGIN Includes */
 //#include "stm32f7xx_hal_dfsdm.h"
-#include "stm32f7xx_hal.h"
-
-
-extern DFSDM_Channel_HandleTypeDef hdfsdm1_channel1;
-extern DFSDM_Channel_HandleTypeDef hdfsdm1_channel5;
-
-extern I2C_HandleTypeDef hi2c1;
-
-extern SAI_HandleTypeDef hsai_BlockA1;
-extern SAI_HandleTypeDef hsai_BlockB1;
-
-extern MMC_HandleTypeDef hmmc2;
-
-extern UART_HandleTypeDef huart6;
-extern DMA_HandleTypeDef hdma_usart6_rx;
-extern DMA_HandleTypeDef hdma_usart6_tx;
+//#include "stm32f7xx_hal.h"
+#include <stdint.h>
+//
+//extern DFSDM_Channel_HandleTypeDef hdfsdm1_channel1;
+//extern DFSDM_Channel_HandleTypeDef hdfsdm1_channel5;
+//
+//extern I2C_HandleTypeDef hi2c1;
+//
+//extern SAI_HandleTypeDef hsai_BlockA1;
+//extern SAI_HandleTypeDef hsai_BlockB1;
+//
+//extern MMC_HandleTypeDef hmmc2;
+//
+//extern UART_HandleTypeDef huart6;
+//extern DMA_HandleTypeDef hdma_usart6_rx;
+//extern DMA_HandleTypeDef hdma_usart6_tx;
 
 
 /* USER CODE END Includes */
@@ -94,9 +94,11 @@ extern DMA_HandleTypeDef hdma_usart6_tx;
 
 int hal_main(void);
 void HAL_SYSTICK_Callback(void);
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
+//void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 int millis();
 void _Error_Handler(char *, int);
+void BlinkErrorCode( uint32_t time );
 
 #define Error_Handler() _Error_Handler(__FILE__, __LINE__)
 #ifdef __cplusplus

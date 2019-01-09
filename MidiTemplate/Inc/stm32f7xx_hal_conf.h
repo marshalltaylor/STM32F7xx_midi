@@ -40,7 +40,7 @@
  extern "C" {
 #endif
 
-//#include "hal_main.h"
+#include "hal_main.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
