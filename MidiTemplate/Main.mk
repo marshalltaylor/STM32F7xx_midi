@@ -51,7 +51,9 @@ $(CUBE_PROJECT_DIR)/Middlewares/ST/STM32_USB_Device_Library/Core/Inc \
 $(CUBE_PROJECT_DIR)/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
 
 PROJECT_C_SOURCES = \
-./Src/main.cpp
+./Src/main.cpp \
+./Src/sketch.cpp \
+./Src/BlinkerPanel.cpp
 
 PROJECT_C_INCLUDES = \
 ./Inc

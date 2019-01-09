@@ -12,21 +12,28 @@ DMA_HandleTypeDef hdma_usart6_tx;
 bool UartTxInProgress = false;
 
 #define TX_BUFFER_SIZE 256
+#define RX_BUFFER_SIZE 256
 
 uint8_t txDataBuffer[TX_BUFFER_SIZE+10];
 int16_t txDataBuffer_head;
 int16_t txDataBuffer_next;
 int16_t txDataBuffer_tail;
-uint8_t rxDataBuffer;
 
-
-uint8_t myData[] = "Test Data\n";
+uint8_t rxCharBuffer;
+uint8_t rxDataBuffer[RX_BUFFER_SIZE+10];
+int16_t rxDataBuffer_first;
+int16_t rxDataBuffer_last;
 
 void MX_USART6_UART_Init(void)
 {
   txDataBuffer_head = 0;
   txDataBuffer_next = 0;
   txDataBuffer_tail = 0;
+
+  rxDataBuffer_first = 0;
+  rxDataBuffer_last = 0;
+  rxDataBuffer[0] = 0;
+  
   UartTxInProgress = false;
   
   huart6.Instance = USART6;
@@ -48,7 +55,7 @@ void MX_USART6_UART_Init(void)
   //////  BlinkErrorCode(250);
   //}
   //UartTxInProgress = false;
-  HAL_UART_Receive_DMA(&huart6, &rxDataBuffer, 1);
+  HAL_UART_Receive_DMA(&huart6, &rxCharBuffer, 1);
 }
 
 static void uartQueueNextData(void)
@@ -73,6 +80,11 @@ static void uartQueueNextData(void)
 	}
 }
 
+uint8_t uartPeek(void)
+{
+	return rxDataBuffer[rxDataBuffer_first];
+}
+
 void uartWrite(uint8_t data)
 {
 	txDataBuffer[txDataBuffer_tail] = data;
@@ -92,6 +104,29 @@ void uartWrite(uint8_t data)
 	uartQueueNextData();
 }
 
+uint8_t uartRead(void)
+{
+	uint8_t c = uartPeek();
+	if(rxDataBuffer_first != rxDataBuffer_last)
+	{
+		rxDataBuffer_first++;
+		if( rxDataBuffer_first >= RX_BUFFER_SIZE )
+		{
+			rxDataBuffer_first = 0;
+		}
+	}
+	return c;
+}
+
+uint16_t uartReadBytesAvailable(void)
+{
+	uint16_t var = rxDataBuffer_last - rxDataBuffer_first;
+	if( var < 0 )
+	{
+		var += RX_BUFFER_SIZE;
+	}
+	return var;
+}
 /**
   * @brief  Tx Transfer completed callback
   * @param  UartHandle: UART handle. 
@@ -121,11 +156,14 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle)
   */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
-	uartWrite(rxDataBuffer);
-  /* Set transmission flag: trasfer complete*/
-  //UartReady = SET;
-//BlinkErrorCode(500);
-	HAL_UART_Receive_DMA(&huart6, &rxDataBuffer, 1);
+	rxDataBuffer[rxDataBuffer_last] = rxCharBuffer;
+	rxDataBuffer_last++;
+	if( rxDataBuffer_last >= RX_BUFFER_SIZE )
+	{
+		rxDataBuffer_last = 0;
+	}
+	//Queue another rx transfer
+	HAL_UART_Receive_DMA(&huart6, &rxCharBuffer, 1);
   
 }
 
