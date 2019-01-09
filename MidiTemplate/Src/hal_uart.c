@@ -3,124 +3,148 @@
 #include "hal_main.h"
 #include "stm32f7xx_hal.h"
 #include "usb_device.h"
-
+#include "hal_uart.h"
 
 UART_HandleTypeDef huart6;
 DMA_HandleTypeDef hdma_usart6_rx;
 DMA_HandleTypeDef hdma_usart6_tx;
 
-bool UartTxInProgress = false;
+UART_HandleTypeDef huart1;
+DMA_HandleTypeDef hdma_usart1_rx;
+DMA_HandleTypeDef hdma_usart1_tx;
 
-#define TX_BUFFER_SIZE 256
-#define RX_BUFFER_SIZE 256
+UartInstance_t VCP_UART;
+UartInstance_t D01_UART;
 
-uint8_t txDataBuffer[TX_BUFFER_SIZE+10];
-int16_t txDataBuffer_head;
-int16_t txDataBuffer_next;
-int16_t txDataBuffer_tail;
-
-uint8_t rxCharBuffer;
-uint8_t rxDataBuffer[RX_BUFFER_SIZE+10];
-int16_t rxDataBuffer_first;
-int16_t rxDataBuffer_last;
-
-void MX_USART6_UART_Init(void)
+void MX_USART1_UART_Init(void)
 {
-  txDataBuffer_head = 0;
-  txDataBuffer_next = 0;
-  txDataBuffer_tail = 0;
+  VCP_UART.huart = &huart1;
+  VCP_UART.hdma_rx = &hdma_usart1_rx;
+  VCP_UART.hdma_tx = &hdma_usart1_tx;
+  
+  VCP_UART.txDataBuffer_head = 0;
+  VCP_UART.txDataBuffer_next = 0;
+  VCP_UART.txDataBuffer_tail = 0;
 
-  rxDataBuffer_first = 0;
-  rxDataBuffer_last = 0;
-  rxDataBuffer[0] = 0;
+  VCP_UART.rxDataBuffer_first = 0;
+  VCP_UART.rxDataBuffer_last = 0;
+  VCP_UART.rxDataBuffer[0] = 0;
   
-  UartTxInProgress = false;
+  VCP_UART.UartTxInProgress = false;
   
-  huart6.Instance = USART6;
-  huart6.Init.BaudRate = 115200;
-  huart6.Init.WordLength = UART_WORDLENGTH_8B;
-  huart6.Init.StopBits = UART_STOPBITS_1;
-  huart6.Init.Parity = UART_PARITY_NONE;
-  huart6.Init.Mode = UART_MODE_TX_RX;
-  huart6.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart6.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart6.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart6.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart6) != HAL_OK)
+  VCP_UART.huart->Instance = USART1;
+  VCP_UART.huart->Init.BaudRate = 115200;
+  VCP_UART.huart->Init.WordLength = UART_WORDLENGTH_8B;
+  VCP_UART.huart->Init.StopBits = UART_STOPBITS_1;
+  VCP_UART.huart->Init.Parity = UART_PARITY_NONE;
+  VCP_UART.huart->Init.Mode = UART_MODE_TX_RX;
+  VCP_UART.huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  VCP_UART.huart->Init.OverSampling = UART_OVERSAMPLING_16;
+  VCP_UART.huart->Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  VCP_UART.huart->AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(VCP_UART.huart) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
-  //if(HAL_UART_Transmit_DMA(&huart6, myData, sizeof(myData))!= HAL_OK)
-  //{
-  //////  BlinkErrorCode(250);
-  //}
-  //UartTxInProgress = false;
-  HAL_UART_Receive_DMA(&huart6, &rxCharBuffer, 1);
+  HAL_UART_Receive_DMA(VCP_UART.huart, &VCP_UART.rxCharBuffer, 1);
 }
 
-static void uartQueueNextData(void)
+void MX_USART6_UART_Init(void)
+{
+  D01_UART.huart = &huart6;
+  D01_UART.hdma_rx = &hdma_usart6_rx;
+  D01_UART.hdma_tx = &hdma_usart6_tx;
+  
+  D01_UART.txDataBuffer_head = 0;
+  D01_UART.txDataBuffer_next = 0;
+  D01_UART.txDataBuffer_tail = 0;
+
+  D01_UART.rxDataBuffer_first = 0;
+  D01_UART.rxDataBuffer_last = 0;
+  D01_UART.rxDataBuffer[0] = 0;
+  
+  D01_UART.UartTxInProgress = false;
+  
+  D01_UART.huart->Instance = USART6;
+  D01_UART.huart->Init.BaudRate = 115200;
+  D01_UART.huart->Init.WordLength = UART_WORDLENGTH_8B;
+  D01_UART.huart->Init.StopBits = UART_STOPBITS_1;
+  D01_UART.huart->Init.Parity = UART_PARITY_NONE;
+  D01_UART.huart->Init.Mode = UART_MODE_TX_RX;
+  D01_UART.huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  D01_UART.huart->Init.OverSampling = UART_OVERSAMPLING_16;
+  D01_UART.huart->Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  D01_UART.huart->AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(D01_UART.huart) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+  HAL_UART_Receive_DMA(D01_UART.huart, &D01_UART.rxCharBuffer, 1);
+}
+
+static void uartQueueNextData(UartInstance_t * UART)
 {
 	int16_t length;
-	if(UartTxInProgress == false)
+	if(UART->UartTxInProgress == false)
 	{
-		length = txDataBuffer_tail - txDataBuffer_head;
+		length = UART->txDataBuffer_tail - UART->txDataBuffer_head;
 		if(length <= 0)
 		{
-			length = TX_BUFFER_SIZE - txDataBuffer_head;
-			txDataBuffer_next = 0;
-			UartTxInProgress = true;
-			HAL_UART_Transmit_DMA(&huart6, txDataBuffer + txDataBuffer_head, length);
+			length = TX_BUFFER_SIZE - UART->txDataBuffer_head;
+			UART->txDataBuffer_next = 0;
+			UART->UartTxInProgress = true;
+			HAL_UART_Transmit_DMA(UART->huart, UART->txDataBuffer + UART->txDataBuffer_head, length);
 		}
 		else if(length > 0)
 		{
-			txDataBuffer_next = txDataBuffer_tail;
-			UartTxInProgress = true;
-			HAL_UART_Transmit_DMA(&huart6, txDataBuffer + txDataBuffer_head, length);
+			UART->txDataBuffer_next = UART->txDataBuffer_tail;
+			UART->UartTxInProgress = true;
+			HAL_UART_Transmit_DMA(UART->huart, UART->txDataBuffer + UART->txDataBuffer_head, length);
 		}			
 	}
 }
 
-uint8_t uartPeek(void)
+uint8_t halUartPeek(UartInstance_t * UART)
 {
-	return rxDataBuffer[rxDataBuffer_first];
+	return UART->rxDataBuffer[UART->rxDataBuffer_first];
 }
 
-void uartWrite(uint8_t data)
+void halUartWrite(uint8_t data, UartInstance_t * UART)
 {
-	txDataBuffer[txDataBuffer_tail] = data;
-	txDataBuffer_tail++;
-	if( txDataBuffer_tail >= TX_BUFFER_SIZE )
+	UART->txDataBuffer[UART->txDataBuffer_tail] = data;
+	UART->txDataBuffer_tail++;
+	if( UART->txDataBuffer_tail >= TX_BUFFER_SIZE )
 	{
-		txDataBuffer_tail = 0;
+		UART->txDataBuffer_tail = 0;
 	}
-	if( txDataBuffer_tail == txDataBuffer_head )
+	if( UART->txDataBuffer_tail == UART->txDataBuffer_head )
 	{
-		txDataBuffer_tail--;
-		if( txDataBuffer_tail < 0 )
+		UART->txDataBuffer_tail--;
+		if( UART->txDataBuffer_tail < 0 )
 		{
-			txDataBuffer_tail = TX_BUFFER_SIZE - 1;
+			UART->txDataBuffer_tail = TX_BUFFER_SIZE - 1;
 		}
 	}
-	uartQueueNextData();
+	uartQueueNextData(UART);
 }
 
-uint8_t uartRead(void)
+uint8_t halUartRead(UartInstance_t * UART)
 {
-	uint8_t c = uartPeek();
-	if(rxDataBuffer_first != rxDataBuffer_last)
+	uint8_t c = halUartPeek(UART);
+	if(UART->rxDataBuffer_first != UART->rxDataBuffer_last)
 	{
-		rxDataBuffer_first++;
-		if( rxDataBuffer_first >= RX_BUFFER_SIZE )
+		UART->rxDataBuffer_first++;
+		if( UART->rxDataBuffer_first >= RX_BUFFER_SIZE )
 		{
-			rxDataBuffer_first = 0;
+			UART->rxDataBuffer_first = 0;
 		}
 	}
 	return c;
 }
 
-uint16_t uartReadBytesAvailable(void)
+uint16_t halUartReadBytesAvailable(UartInstance_t * UART)
 {
-	uint16_t var = rxDataBuffer_last - rxDataBuffer_first;
+	uint16_t var = UART->rxDataBuffer_last - UART->rxDataBuffer_first;
 	if( var < 0 )
 	{
 		var += RX_BUFFER_SIZE;
@@ -136,15 +160,27 @@ uint16_t uartReadBytesAvailable(void)
   */
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
-  /* Set transmission flag: trasfer complete*/
-  UartTxInProgress = false;
-  txDataBuffer_head = txDataBuffer_next;
-  if(txDataBuffer_next != txDataBuffer_tail)
+  if(UartHandle->Instance==USART6)
   {
-	  uartQueueNextData();
+    /* Set transmission flag: trasfer complete*/
+    D01_UART.UartTxInProgress = false;
+    D01_UART.txDataBuffer_head = D01_UART.txDataBuffer_next;
+    if(D01_UART.txDataBuffer_next != D01_UART.txDataBuffer_tail)
+    {
+	    uartQueueNextData(&D01_UART);
+    }
   }
-  //BlinkErrorCode(500);
-  
+  else if(UartHandle->Instance==USART1)
+  {
+    /* Set transmission flag: trasfer complete*/
+    VCP_UART.UartTxInProgress = false;
+    VCP_UART.txDataBuffer_head = VCP_UART.txDataBuffer_next;
+    if(VCP_UART.txDataBuffer_next != VCP_UART.txDataBuffer_tail)
+    {
+	    uartQueueNextData(&VCP_UART);
+    }
+  }
+ 
 }
 
 /**
@@ -156,15 +192,28 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle)
   */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
-	rxDataBuffer[rxDataBuffer_last] = rxCharBuffer;
-	rxDataBuffer_last++;
-	if( rxDataBuffer_last >= RX_BUFFER_SIZE )
+  if(UartHandle->Instance==USART6)
+  {
+	D01_UART.rxDataBuffer[D01_UART.rxDataBuffer_last] = D01_UART.rxCharBuffer;
+	D01_UART.rxDataBuffer_last++;
+	if( D01_UART.rxDataBuffer_last >= RX_BUFFER_SIZE )
 	{
-		rxDataBuffer_last = 0;
+		D01_UART.rxDataBuffer_last = 0;
 	}
 	//Queue another rx transfer
-	HAL_UART_Receive_DMA(&huart6, &rxCharBuffer, 1);
-  
+	HAL_UART_Receive_DMA(&huart6, &D01_UART.rxCharBuffer, 1);
+  }
+  else if(UartHandle->Instance==USART1)
+  {
+	VCP_UART.rxDataBuffer[VCP_UART.rxDataBuffer_last] = VCP_UART.rxCharBuffer;
+	VCP_UART.rxDataBuffer_last++;
+	if( VCP_UART.rxDataBuffer_last >= RX_BUFFER_SIZE )
+	{
+		VCP_UART.rxDataBuffer_last = 0;
+	}
+	//Queue another rx transfer
+	HAL_UART_Receive_DMA(&huart1, &VCP_UART.rxCharBuffer, 1);
+  }  
 }
 
 /**

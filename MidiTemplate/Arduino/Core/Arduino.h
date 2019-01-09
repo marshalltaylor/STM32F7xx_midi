@@ -32,6 +32,7 @@
 //using namespace std;
 
 extern HardwareSerial Serial1;
+extern HardwareSerial Serial6;
 
 
 #ifdef __cplusplus

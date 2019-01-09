@@ -27,48 +27,9 @@
 //#include <inttypes.h>
 
 #include "Stream.h"
-
-#include "interface.h"
-extern UART_HandleTypeDef huart6;
-
-// Define constants and variables for buffering incoming serial data.  We're
-// using a ring buffer (I think), in which head is the index of the location
-// to which to write the next incoming character and tail is the index of the
-// location from which to read.
-// NOTE: a "power of 2" buffer size is reccomended to dramatically
-//       optimize all the modulo operations for ring buffers.
-// WARNING: When buffer sizes are increased to > 256, the buffer index
-// variables are automatically increased in size, but the extra
-// atomicity guards needed for that are not implemented. This will
-// often work, but occasionally a race condition can occur that makes
-// Serial behave erratically. See https://github.com/arduino/Arduino/issues/2405
-#if !defined(SERIAL_TX_BUFFER_SIZE)
-#define SERIAL_TX_BUFFER_SIZE 64
-#endif
-#if !defined(SERIAL_RX_BUFFER_SIZE)
-#define SERIAL_RX_BUFFER_SIZE 64
-#endif
-#if (SERIAL_TX_BUFFER_SIZE>256)
-typedef uint16_t tx_buffer_index_t;
-#else
-typedef uint8_t tx_buffer_index_t;
-#endif
-#if  (SERIAL_RX_BUFFER_SIZE>256)
-typedef uint16_t rx_buffer_index_t;
-#else
-typedef uint8_t rx_buffer_index_t;
-#endif
-
-// Define config for Serial.begin(baud, config);
-// below configs are not supported by STM32
-//#define SERIAL_5N1 0x00
-//#define SERIAL_5N2 0x08
-//#define SERIAL_5E1 0x20
-//#define SERIAL_5E2 0x28
-//#define SERIAL_5O1 0x30
-//#define SERIAL_5O2 0x38
-//#define SERIAL_6N1 0x02
-//#define SERIAL_6N2 0x0A
+#include "hal_main.h"
+#include "stm32f7xx_hal.h"
+#include "hal_uart.h"
 
 class HardwareSerial : public Stream
 {
@@ -78,7 +39,7 @@ class HardwareSerial : public Stream
     // 32 bytes of this struct can be accessed quickly using the ldd
     // instruction.
 
-    serial_t _serial;
+	UartInstance* _serial;
 
   public:
     HardwareSerial(void);

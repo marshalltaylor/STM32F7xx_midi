@@ -31,7 +31,11 @@
 #include "HardwareSerial.h"
 #include "interface.h"
 
+extern UartInstance VCP_UART;
+extern UartInstance D01_UART;
+
 HardwareSerial Serial1;
+HardwareSerial Serial6;
 
 #define PinName int
 // Constructors ////////////////////////////////////////////////////////////////
@@ -47,6 +51,17 @@ void HardwareSerial::init(void)
 
 void HardwareSerial::begin(unsigned long baud, uint8_t config)
 {
+	switch( config )
+	{
+		case 1:
+		Serial1._serial = &VCP_UART;
+		break;
+		case 6:
+		Serial6._serial = &D01_UART;
+		break;
+		default:
+		break;
+	}
 }
 
 void HardwareSerial::end()
@@ -56,18 +71,18 @@ void HardwareSerial::end()
 
 int HardwareSerial::available(void)
 {
-  return uartReadBytesAvailable();
+  return halUartReadBytesAvailable(_serial);
 }
 
 int HardwareSerial::peek(void)
 {
-  return uartPeek();
+  return halUartPeek(_serial);
 }
 
 int HardwareSerial::read(void)
 {
   // if the head isn't ahead of the tail, we don't have any characters
-  return uartRead();
+  return halUartRead(_serial);
 }
 
 int HardwareSerial::availableForWrite(void)
@@ -81,6 +96,6 @@ void HardwareSerial::flush()
 
 size_t HardwareSerial::write(uint8_t c)
 {
-  uartWrite(c);
+  halUartWrite(c, _serial);
   return 1;
 }

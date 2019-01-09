@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#define Serial Serial1
+#define Serial Serial6
 
 void setup(void);
 void loop(void);

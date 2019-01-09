@@ -8,9 +8,11 @@ uint16_t debugCounter = 0;
 
 extern void setup()
 {
-	Serial.begin(9600);
+	Serial.begin(9600, 6);
+	Serial1.begin(12345, 1);
 	delay(2000);
 	Serial.println("OK");
+	Serial1.println("OK");
 	//Go to fresh state
 	myCustomPanel.reset();
 	
@@ -34,7 +36,9 @@ extern void loop()
 		//Do debug stuff
 		Serial.print("State: ");
 		Serial.println(myCustomPanel.getState()); 
-		//Serial.print("Free ram: ");
+		Serial1.print("State: ");
+		Serial1.println(myCustomPanel.getState()); 
+		
 		debugCounter = 0;
 	}
 	
