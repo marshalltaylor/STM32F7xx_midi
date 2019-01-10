@@ -6,10 +6,10 @@
 
 BlinkerPanel::BlinkerPanel( void )
 {
-	myButton.setHardware(new ArduinoDigitalIn( D28 ), 0);
+	myButton.setHardware(new ArduinoDigitalIn( D22 ), 0);
 	add( &myButton );
 
-	myLed.setHardware(new ArduinoDigitalOut( D26 ), 0);
+	myLed.setHardware(new ArduinoDigitalOut( D13 ), 0);
 	add( &myLed );
 	
 	state = PInit;

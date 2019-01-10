@@ -53,41 +53,6 @@ extern "C"{
 #define PORTK_OFFSET 0x2800U
 
 
-
-
-
-
-
-//#define PC7  0
-//#define PC6  1
-//#define PJ1  2
-//#define PF6  3
-//#define PJ0  4
-//#define PC8  5
-//#define PF7  6
-//#define PJ3  7
-//#define PJ4  8
-//#define PH6  9
-//#define PA11 10
-//#define PB15 11
-//#define PB14 12
-//#define PA12 13
-//#define PB9  14
-//#define PB8  15
-//#define PA6  16 // A0
-//#define PF4  17 // A1
-//#define PC2  18 // A2
-//#define PF10 19 // A3
-//#define PF8  20 // A4
-//#define PF9  21 // A5
-//#define PI11 22 // User btn
-//#define PB7  23 // ST-Link Rx
-//#define PA9  24 // ST-Link Tx
-//#define PC13 25 // SD detect
-//#define PJ13 26
-//#define PJ5  27
-//#define PA0  28
-
 #define D0 0
 #define D1 1
 #define D2 2
@@ -114,7 +79,7 @@ extern "C"{
 #define D23 23 // ST-Link Rx
 #define D24 24 // ST-Link Tx
 #define D25 25 // SD detect
-#define D26 26
+#define D26 26 // User LED
 #define D27 27
 #define D28 28
 

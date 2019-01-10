@@ -14,7 +14,7 @@
 # Build stuff
 BUILD_DIR = build
 TARGET_EXEC = $(BUILD_DIR)/output.elf
-LINKER_FILE = ../CubeProject/STM32F769NIHx_FLASH.ld
+LINKER_FILE = ../CubeProject/STM32F446RETx_FLASH.ld
 
 # Tools
 #GCC_PATH = /cygdrive/c/STM32/gcc-arm-none-eabi/bin
@@ -57,7 +57,7 @@ PROJECT_INCLUDES = $(PROJECT_C_INCLUDES) $(ARDUINO_INCLUDES)
 #######################################
 # c
 #  -DUSE_HAL_DRIVER -DSTM32F7xx 
-CFLAGS = -v -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -DSTM32F7xx '-D__weak=__attribute__((weak))' '-D__packed=__attribute__((__packed__))' -DSTM32F769xx -g3 -O0 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0
+CFLAGS = -v -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F4xx '-D__weak=__attribute__((weak))' '-D__packed=__attribute__((__packed__))' -DSTM32F446xx -g3 -O0 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
@@ -70,10 +70,10 @@ CPPFLAGS = $(CFLAGS) -std=c++11 -fno-rtti
 CFLAGS += -fmax-errors=1
 
 # assembler
-ASFLAGS = -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -g
+ASFLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -g
 
 # linker -lstdc++ -lsupc++ 
-LDFLAGS = -v -lc -g -lm -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16 -specs=nosys.specs -specs=nano.specs -T$(LINKER_FILE) -Wl,-Map=$(BUILD_DIR)/output.map -Wl,--gc-sections
+LDFLAGS = -v -lc -g -lm -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -specs=nosys.specs -specs=nano.specs -T$(LINKER_FILE) -Wl,-Map=$(BUILD_DIR)/output.map -Wl,--gc-sections
 
 # binaries
 HEX = $(CP) -O ihex

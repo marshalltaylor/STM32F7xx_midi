@@ -1,3 +1,4 @@
+// This file holds misc stuff that an Arduino sketch might require.
 #include <stdio.h>
 //#include "stm32f7xx_hal.h"
 #include "hal_main.h"
@@ -8,7 +9,7 @@
 extern UartInstance_t VCP_UART;
 extern UartInstance_t D01_UART;
 
-HardwareSerial Serial1;
+HardwareSerial Serial2;
 HardwareSerial Serial6;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -16,7 +17,7 @@ HardwareSerial Serial6;
 /* Functions -----------------------------------------------------------------*/
 void interface_init(void)
 {
-	Serial1.init(&VCP_UART);
+	Serial2.init(&VCP_UART);
 	Serial6.init(&D01_UART);
 }
 

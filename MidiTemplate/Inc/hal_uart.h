@@ -2,7 +2,7 @@
 #define HAL_UART_H
 
 #include "hal_main.h"
-#include "stm32f7xx_hal.h"
+#include "stm32f4xx_hal.h"
 
 #define TX_BUFFER_SIZE 256
 #define RX_BUFFER_SIZE 256
