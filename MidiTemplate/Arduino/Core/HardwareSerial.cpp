@@ -31,20 +31,15 @@
 #include "HardwareSerial.h"
 #include "interface.h"
 
-extern UartInstance VCP_UART;
-extern UartInstance D01_UART;
-
-HardwareSerial Serial1;
-HardwareSerial Serial6;
-
 #define PinName int
 // Constructors ////////////////////////////////////////////////////////////////
 HardwareSerial::HardwareSerial(void)
 {
 }
 
-void HardwareSerial::init(void)
+void HardwareSerial::init(UartInstance* HAL_UART)
 {
+	_serial = HAL_UART;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -54,10 +49,8 @@ void HardwareSerial::begin(unsigned long baud, uint8_t config)
 	switch( config )
 	{
 		case 1:
-		Serial1._serial = &VCP_UART;
 		break;
 		case 6:
-		Serial6._serial = &D01_UART;
 		break;
 		default:
 		break;

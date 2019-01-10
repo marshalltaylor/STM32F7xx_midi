@@ -7,8 +7,13 @@
 
 int main()
 {
+	// STM-like init
 	hal_main();
 	
+	// Arduino (serial objects) init
+	interface_init();
+	
+	// sketch.ino
 	setup();
 
 	while(1)

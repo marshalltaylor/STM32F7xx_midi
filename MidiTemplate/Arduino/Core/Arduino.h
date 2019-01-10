@@ -25,29 +25,17 @@
 #include "STM_ArduinoPins.h"
 #include "GPIO.h"
 #include "ADC.h"
-#include "UART.h"
 #include "HardwareSerial.h"
 #include "interface.h"
 
-//using namespace std;
-
-extern HardwareSerial Serial1;
-extern HardwareSerial Serial6;
 
 
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
 
-//void delay(uint32_t) {};
-//Extern a bunch of objects and shit here!
-//extern void * memcpy(uint8_t *, const void*, size_t);
-
 #ifdef __cplusplus
 } // extern "C"
 #endif // __cplusplus
-
-// Include pins variant
-//#include "pins_arduino.h"
 
 #endif // Arduino_h

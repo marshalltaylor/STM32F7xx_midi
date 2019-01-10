@@ -19,6 +19,7 @@
   Modified 28 September 2010 by Mark Sproul
   Modified 14 August 2012 by Alarus
   Modified 3 December 2013 by Matthijs Kooijman
+  Modified 9 January 2019 by Marshall Taylor
 */
 
 #ifndef HardwareSerial_h
@@ -30,21 +31,16 @@
 #include "hal_main.h"
 #include "stm32f7xx_hal.h"
 #include "hal_uart.h"
+#include "HardwareSerial.h"
 
 class HardwareSerial : public Stream
 {
   protected:
-    // Has any byte been written to the UART since begin()
-    // Don't put any members after these buffers, since only the first
-    // 32 bytes of this struct can be accessed quickly using the ldd
-    // instruction.
-
-	UartInstance* _serial;
-
   public:
     HardwareSerial(void);
-    void begin(unsigned long baud) { begin(baud, SERIAL_8N1); }
+    void begin(unsigned long baud) { begin(baud, 0); }
     void begin(unsigned long, uint8_t);
+	void init(UartInstance* HAL_UART);
     void end();
     virtual int available(void);
     virtual int peek(void);
@@ -60,8 +56,8 @@ class HardwareSerial : public Stream
     operator bool() { return true; }
 
   private:
+	UartInstance* _serial;
     uint8_t _config;
-    void init(void);
 };
 
 extern HardwareSerial Serial1;
