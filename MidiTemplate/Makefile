@@ -56,18 +56,18 @@ PROJECT_INCLUDES = $(PROJECT_C_INCLUDES) $(ARDUINO_INCLUDES)
 # FLAGS
 #######################################
 # c
-#  -DUSE_HAL_DRIVER -DSTM32F7xx 
-CFLAGS = -v -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F4xx '-D__weak=__attribute__((weak))' '-D__packed=__attribute__((__packed__))' -DSTM32F446xx -g3 -O0 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0
+#  -DUSE_HAL_DRIVER -DSTM32F7xx  '-D__weak=__attribute__((weak))' '-D__packed=__attribute__((__packed__))' -fmessage-length=0 -Og -ffunction-sections
+CFLAGS = -v -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F4xx -DSTM32F446xx -g -Wall -c
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
-# cpp
-CPPFLAGS = $(CFLAGS) -std=c++11 -fno-rtti
-
 # Message behavior
 # -Werror -fsyntax-only -fmax-errors=1 -w
 CFLAGS += -fmax-errors=1
+
+# cpp
+CPPFLAGS = $(CFLAGS) -std=c++11 -fno-rtti
 
 # assembler
 ASFLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -g

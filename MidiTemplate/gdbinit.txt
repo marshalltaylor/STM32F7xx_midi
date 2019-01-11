@@ -1,6 +1,7 @@
 handle SIGINT
 target ext:3333
-#load
+load
+#run
 #break unused_int.c:25
 #break hal_main.c:166
 #break hal_uart.c:61
