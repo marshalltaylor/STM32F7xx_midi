@@ -20,7 +20,8 @@ $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
 $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
 $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
 $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
-./Src/system_stm32f4xx.c
+./Src/system_stm32f4xx.c \
+startup_stm32f446xx.s
 
 HAL_C_INCLUDES = \
 $(CUBE_PROJECT_DIR)/Drivers/CMSIS/Include \

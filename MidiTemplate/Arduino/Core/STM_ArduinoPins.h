@@ -52,7 +52,6 @@ extern "C"{
 #define PORTJ_OFFSET 0x2400U
 #define PORTK_OFFSET 0x2800U
 
-
 #define D0 0
 #define D1 1
 #define D2 2
@@ -69,26 +68,26 @@ extern "C"{
 #define D13 13
 #define D14 14
 #define D15 15
-#define D16 16 // A0
-#define D17 17 // A1
-#define D18 18 // A2
-#define D19 19 // A3
-#define D20 20 // A4
-#define D21 21 // A5
-#define D22 22 // User btn
-#define D23 23 // ST-Link Rx
-#define D24 24 // ST-Link Tx
-#define D25 25 // SD detect
-#define D26 26 // User LED
+#define D16 16
+#define D17 17
+#define D18 18
+#define D19 19
+#define D20 20
+#define D21 21
+#define D22 22
+#define D23 23
+#define D24 24
+#define D25 25
+#define D26 26
 #define D27 27
 #define D28 28
 
-#define A0 D16 // A0
-#define A1 D17 // A1
-#define A2 D18 // A2
-#define A3 D19 // A3
-#define A4 D20 // A4
-#define A5 D21 // A5
+#define A0 D16
+#define A1 D17
+#define A2 D18
+#define A3 D19
+#define A4 D20
+#define A5 D21
 
 #ifdef __cplusplus
 }

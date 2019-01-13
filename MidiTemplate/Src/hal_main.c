@@ -118,9 +118,9 @@ int hal_main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  //MX_DMA_Init();
-  //MX_USART2_UART_Init();
-  //MX_USART6_UART_Init();
+  MX_DMA_Init();
+  MX_USART2_UART_Init();
+  MX_USART6_UART_Init();
   return 0; //Go back to higher level main()
 }
 

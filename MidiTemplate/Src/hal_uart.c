@@ -17,7 +17,7 @@ UartInstance_t D01_UART;
 
 void MX_USART2_UART_Init(void)
 {
-  VCP_UART.huart = &huart6;
+  VCP_UART.huart = &huart2;
   VCP_UART.hdma_rx = &hdma_usart6_rx;
   VCP_UART.hdma_tx = &hdma_usart6_tx;
   
@@ -48,7 +48,7 @@ void MX_USART2_UART_Init(void)
 
 void MX_USART6_UART_Init(void)
 {
-  D01_UART.huart = &huart2;
+  D01_UART.huart = &huart6;
   D01_UART.hdma_rx = &hdma_usart2_rx;
   D01_UART.hdma_tx = &hdma_usart2_tx;
   
@@ -220,6 +220,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
   */
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
 {
-    Error_Handler();
+    //Error_Handler();
 	//BlinkErrorCode(10);
 }

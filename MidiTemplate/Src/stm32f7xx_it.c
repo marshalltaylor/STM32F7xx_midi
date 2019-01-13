@@ -42,8 +42,8 @@
 
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_OTG_HS;
-extern DMA_HandleTypeDef hdma_usart1_rx;
-extern DMA_HandleTypeDef hdma_usart1_tx;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart2_tx;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern DMA_HandleTypeDef hdma_usart6_tx;
 extern UART_HandleTypeDef huart1;
@@ -178,9 +178,9 @@ void USART6_IRQHandler(void)
 /**
 * @brief This function handles USART1 global interrupt.
 */
-void USART1_IRQHandler(void)
+void USART2_IRQHandler(void)
 {
-  HAL_UART_IRQHandler(&huart1);
+  HAL_UART_IRQHandler(&huart2);
 }
 
 /**
@@ -188,7 +188,7 @@ void USART1_IRQHandler(void)
 */
 void DMA2_Stream2_IRQHandler(void)
 {
-  HAL_DMA_IRQHandler(&hdma_usart1_rx);
+  HAL_DMA_IRQHandler(&hdma_usart2_rx);
 }
 
 /**
@@ -196,5 +196,5 @@ void DMA2_Stream2_IRQHandler(void)
 */
 void DMA2_Stream7_IRQHandler(void)
 {
-  HAL_DMA_IRQHandler(&hdma_usart1_tx);
+  HAL_DMA_IRQHandler(&hdma_usart2_tx);
 }

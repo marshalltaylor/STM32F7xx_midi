@@ -11,7 +11,7 @@ extern void setup()
 	Serial2.begin(9600, 6);
 	Serial6.begin(12345, 1);
 	delay(2000);
-	Serial2.println("OK");
+	Serial2.println("ok");
 	Serial6.println("OK");
 	//Go to fresh state
 	myCustomPanel.reset();
