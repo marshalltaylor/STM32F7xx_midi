@@ -22,3 +22,4 @@ C:\Users\marshall>openocd -f "E:\github\STM32Fxx_midi\MidiTemplate\usbDebug.cfg"
 C:/STM32/gcc-arm-none-eabi/bin/arm-none-eabi-gdb -x gdbinit.txt build/output.elf
 
 
+https://www.youtube.com/watch?v=KYfADOlstwc

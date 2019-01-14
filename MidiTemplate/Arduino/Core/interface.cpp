@@ -17,8 +17,8 @@ HardwareSerial Serial6;
 /* Functions -----------------------------------------------------------------*/
 void interface_init(void)
 {
-	Serial2.init(&VCP_UART);
-	Serial6.init(&D01_UART);
+	Serial2.init(&D01_UART);
+	Serial6.init(&VCP_UART);
 }
 
 void delay(uint32_t delayInput)

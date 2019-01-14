@@ -17,38 +17,7 @@ UartInstance_t D01_UART;
 
 void MX_USART2_UART_Init(void)
 {
-  VCP_UART.huart = &huart2;
-  VCP_UART.hdma_rx = &hdma_usart6_rx;
-  VCP_UART.hdma_tx = &hdma_usart6_tx;
-  
-  VCP_UART.txDataBuffer_head = 0;
-  VCP_UART.txDataBuffer_next = 0;
-  VCP_UART.txDataBuffer_tail = 0;
-
-  VCP_UART.rxDataBuffer_first = 0;
-  VCP_UART.rxDataBuffer_last = 0;
-  VCP_UART.rxDataBuffer[0] = 0;
-  
-  VCP_UART.UartTxInProgress = false;
-  
-  VCP_UART.huart->Instance = USART2;
-  VCP_UART.huart->Init.BaudRate = 115200;
-  VCP_UART.huart->Init.WordLength = UART_WORDLENGTH_8B;
-  VCP_UART.huart->Init.StopBits = UART_STOPBITS_1;
-  VCP_UART.huart->Init.Parity = UART_PARITY_NONE;
-  VCP_UART.huart->Init.Mode = UART_MODE_TX_RX;
-  VCP_UART.huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  VCP_UART.huart->Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(VCP_UART.huart) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-  HAL_UART_Receive_DMA(VCP_UART.huart, &VCP_UART.rxCharBuffer, 1);
-}
-
-void MX_USART6_UART_Init(void)
-{
-  D01_UART.huart = &huart6;
+  D01_UART.huart = &huart2;
   D01_UART.hdma_rx = &hdma_usart2_rx;
   D01_UART.hdma_tx = &hdma_usart2_tx;
   
@@ -62,8 +31,8 @@ void MX_USART6_UART_Init(void)
   
   D01_UART.UartTxInProgress = false;
   
-  D01_UART.huart->Instance = USART6;
-  D01_UART.huart->Init.BaudRate = 115200;
+  D01_UART.huart->Instance = USART2;
+  D01_UART.huart->Init.BaudRate = 31250;
   D01_UART.huart->Init.WordLength = UART_WORDLENGTH_8B;
   D01_UART.huart->Init.StopBits = UART_STOPBITS_1;
   D01_UART.huart->Init.Parity = UART_PARITY_NONE;
@@ -75,6 +44,37 @@ void MX_USART6_UART_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
   HAL_UART_Receive_DMA(D01_UART.huart, &D01_UART.rxCharBuffer, 1);
+}
+
+void MX_USART6_UART_Init(void)
+{
+  VCP_UART.huart = &huart6;
+  VCP_UART.hdma_rx = &hdma_usart6_rx;
+  VCP_UART.hdma_tx = &hdma_usart6_tx;
+  
+  VCP_UART.txDataBuffer_head = 0;
+  VCP_UART.txDataBuffer_next = 0;
+  VCP_UART.txDataBuffer_tail = 0;
+
+  VCP_UART.rxDataBuffer_first = 0;
+  VCP_UART.rxDataBuffer_last = 0;
+  VCP_UART.rxDataBuffer[0] = 0;
+  
+  VCP_UART.UartTxInProgress = false;
+  
+  VCP_UART.huart->Instance = USART6;
+  VCP_UART.huart->Init.BaudRate = 115200;
+  VCP_UART.huart->Init.WordLength = UART_WORDLENGTH_8B;
+  VCP_UART.huart->Init.StopBits = UART_STOPBITS_1;
+  VCP_UART.huart->Init.Parity = UART_PARITY_NONE;
+  VCP_UART.huart->Init.Mode = UART_MODE_TX_RX;
+  VCP_UART.huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  VCP_UART.huart->Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(VCP_UART.huart) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+  HAL_UART_Receive_DMA(VCP_UART.huart, &VCP_UART.rxCharBuffer, 1);
 }
 
 static void uartQueueNextData(UartInstance_t * UART)

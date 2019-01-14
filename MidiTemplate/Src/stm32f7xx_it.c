@@ -186,7 +186,7 @@ void USART2_IRQHandler(void)
 /**
 * @brief This function handles DMA2 stream2 global interrupt.
 */
-void DMA2_Stream2_IRQHandler(void)
+void DMA1_Stream5_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(&hdma_usart2_rx);
 }
@@ -194,7 +194,7 @@ void DMA2_Stream2_IRQHandler(void)
 /**
 * @brief This function handles DMA2 stream7 global interrupt.
 */
-void DMA2_Stream7_IRQHandler(void)
+void DMA1_Stream6_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(&hdma_usart2_tx);
 }
