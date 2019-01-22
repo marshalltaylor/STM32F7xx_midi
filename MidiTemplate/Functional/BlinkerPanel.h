@@ -27,8 +27,18 @@ public:
 	
 private:
 	//Internal Panel Components
-	Button myButton;
-	Led myLed;
+	Button button1;
+	Button button2;
+	Button button3;
+	Button button4;
+	Button buttonSelect;
+	Button play;
+	Button stop;
+	Led led1;
+	Led led2;
+	Led led3;
+	Led led4;
+	Led ledPlay;
 
 	//  ..and data
 	uint8_t held;

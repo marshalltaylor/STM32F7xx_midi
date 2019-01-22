@@ -81,6 +81,14 @@ extern "C"{
 #define D26 26
 #define D27 27
 #define D28 28
+#define D29 29
+#define D30 30
+#define D31 31
+#define D32 32
+#define D33 33
+#define D34 34
+#define D35 35
+#define D36 36
 
 #define A0 D16
 #define A1 D17

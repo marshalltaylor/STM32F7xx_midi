@@ -3,12 +3,39 @@
 #include "sketch.h"
 #include <MIDI.h>
 
+#include "display_clock.h"
+#include "midiTime.h"
+
+MidiClock myMidiClock;
+	
 MIDI_CREATE_INSTANCE(HardwareSerial, Serial2, MIDI);
 
 BlinkerPanel myCustomPanel;
 
 uint16_t debugCounter = 0;
 
+void handleClock( void )
+{
+	myMidiClock.incrementTick();
+	//Serial6.println("Clock");
+}
+
+void handleStart( void )
+{
+	myMidiClock.play();
+}
+
+void handleContinue( void )
+{
+	myMidiClock.resume();
+}
+
+void handleStop( void )
+{
+	myMidiClock.stop();
+}
+
+	
 void handleNoteOn(byte channel, byte pitch, byte velocity)
 {
 	digitalWrite(D6, 0);
@@ -31,7 +58,10 @@ extern void setup()
 	Serial6.println("OK");
 	//Go to fresh state
 	myCustomPanel.reset();
-	
+	MIDI.setHandleClock(handleClock);
+	MIDI.setHandleStart(handleStart);
+	MIDI.setHandleContinue(handleContinue);
+	MIDI.setHandleStop(handleStop);
 	MIDI.setHandleNoteOn(handleNoteOn);  // Put only the name of the function
     MIDI.setHandleNoteOff(handleNoteOff);
     MIDI.begin(MIDI_CHANNEL_OMNI);
@@ -56,12 +86,17 @@ extern void loop()
 	if( debugCounter > 1000 )
 	{
 		//Do debug stuff
-		//Serial2.print("sta: ");
-		//Serial2.println(myCustomPanel.getState()); 
-		Serial6.print("State: ");
-		Serial6.println(myCustomPanel.getState());
+		//Serial6.println();
+		//Serial6.print("State: ");
+		//Serial6.println(myCustomPanel.getState());
+		//Serial6.print("Playing: ");
+		//Serial6.println(myMidiClock.isPlaying);
+		//Serial6.print("Ticks: ");
+		//Serial6.println(myMidiClock.ticks);
+		//Serial6.println();
 		
 		debugCounter = 0;
+		
 	}
 	
 }

@@ -106,6 +106,7 @@ uint8_t halUartPeek(UartInstance_t * UART)
 
 void halUartWrite(uint8_t data, UartInstance_t * UART)
 {
+	while(UART->UartTxInProgress == true);
 	UART->txDataBuffer[UART->txDataBuffer_tail] = data;
 	UART->txDataBuffer_tail++;
 	if( UART->txDataBuffer_tail >= TX_BUFFER_SIZE )
@@ -201,6 +202,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
   else if(UartHandle->Instance==USART6)
   {
 	VCP_UART.rxDataBuffer[VCP_UART.rxDataBuffer_last] = VCP_UART.rxCharBuffer;
+	halUartWrite(VCP_UART.rxCharBuffer,&VCP_UART); //echo
 	VCP_UART.rxDataBuffer_last++;
 	if( VCP_UART.rxDataBuffer_last >= RX_BUFFER_SIZE )
 	{
@@ -221,5 +223,21 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
 {
     //Error_Handler();
-	//BlinkErrorCode(10);
+	if(UartHandle->ErrorCode == HAL_UART_ERROR_DMA)
+	{
+		//Whatev's, kick it with a fresh buffer
+		if(UartHandle->Instance==USART2)
+		{
+			while(1);
+			//Queue another rx transfer
+			HAL_UART_Receive_DMA(&huart2, &D01_UART.rxCharBuffer, 1);
+		}
+		else if(UartHandle->Instance==USART6)
+		{
+			while(1);
+			//Queue another rx transfer
+			HAL_UART_Receive_DMA(&huart6, &VCP_UART.rxCharBuffer, 1);
+		}
+		UartHandle->ErrorCode &= ~HAL_UART_ERROR_DMA;
+	}
 }

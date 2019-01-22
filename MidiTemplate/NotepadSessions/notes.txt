@@ -17,9 +17,23 @@ MidiTemplate.xml
 
 HALSources.xml
 ----------------
-C:\Users\marshall>openocd -f "E:\github\STM32Fxx_midi\MidiTemplate\usbDebug.cfg" -c "init; reset halt"
+C:\Users\marshall>
+openocd -f "E:\github\STM32F7xx_midi\MidiTemplate\usbDebug.cfg" -c "init; reset halt"
 
 C:/STM32/gcc-arm-none-eabi/bin/arm-none-eabi-gdb -x gdbinit.txt build/output.elf
 
 
 https://www.youtube.com/watch?v=KYfADOlstwc
+
+
+continuing
+Clock 197
+
+1 rollover
+
+Stopping
+Clock 178
+
+
+256-19=237 clocks in 10s at 60bpm
+clocks/beat = 23.7 = 24

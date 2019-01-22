@@ -3,8 +3,11 @@ CUBE_PROJECT_DIR = ../CubeProject
 HAL_C_SOURCES = \
 ./Src/hal_main.c \
 ./Src/hal_uart.c \
+./Src/display_clock.c \
 ./Src/stm32f4xx_it.c \
 ./Src/stm32f4xx_hal_msp.c \
+$(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c \
+$(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c \
 $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
 $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
 $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
@@ -21,6 +24,7 @@ $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
 $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
 $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
 ./Src/system_stm32f4xx.c \
+$(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c \
 startup_stm32f446xx.s
 
 HAL_C_INCLUDES = \
@@ -31,9 +35,12 @@ $(CUBE_PROJECT_DIR)/Drivers/STM32F4xx_HAL_Driver/Inc \
 
 
 PROJECT_C_SOURCES = \
-./Src/main.cpp \
-./Src/sketch.cpp \
-./Src/BlinkerPanel.cpp
+./Functional/main.cpp \
+./Functional/sketch.cpp \
+./Functional/bpmMath.cpp \
+./Functional/midiTime.cpp \
+./Functional/BlinkerPanel.cpp
 
 PROJECT_C_INCLUDES = \
-./Inc
+./Inc \
+./Functional
