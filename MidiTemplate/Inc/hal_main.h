@@ -78,9 +78,11 @@
 #endif
 int hal_main(void);
 void HAL_SYSTICK_Callback(void);
+//void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc);
 //void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 //void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 int millis();
+void convertADC(void);
 void _Error_Handler(char *, int);
 void BlinkErrorCode( uint32_t time );
 

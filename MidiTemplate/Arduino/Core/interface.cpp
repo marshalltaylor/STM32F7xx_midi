@@ -32,4 +32,5 @@ void delay(uint32_t delayInput)
 	{
 		//nop
 	}
+	convertADC(); // Suuuuuper hacky...
 }

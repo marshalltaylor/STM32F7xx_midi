@@ -50,7 +50,7 @@ extern DMA_HandleTypeDef hdma_usart6_tx;
 
 extern void _Error_Handler(char *, int);
 /* USER CODE BEGIN 0 */
-
+static void testDMACallback(DMA_HandleTypeDef *DmaHandle);
 /* USER CODE END 0 */
 /**
   * Initializes the Global MSP.
@@ -110,6 +110,8 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* USER CODE BEGIN ADC1_MspInit 1 */
+  HAL_NVIC_SetPriority(ADC_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(ADC_IRQn);
 
   /* USER CODE END ADC1_MspInit 1 */
   }
@@ -262,6 +264,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     //hdma_usart2_rx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
     //hdma_usart2_rx.Init.MemBurst = DMA_MBURST_SINGLE;
     //hdma_usart2_rx.Init.PeriphBurst = DMA_PBURST_SINGLE;
+	HAL_DMA_RegisterCallback(&hdma_usart2_rx, HAL_DMA_XFER_ERROR_CB_ID, testDMACallback);
     if (HAL_DMA_Init(&hdma_usart2_rx) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
@@ -283,6 +286,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     //hdma_usart2_tx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
     //hdma_usart2_tx.Init.MemBurst = DMA_MBURST_SINGLE;
     //hdma_usart2_tx.Init.PeriphBurst = DMA_PBURST_SINGLE;
+	HAL_DMA_RegisterCallback(&hdma_usart2_tx, HAL_DMA_XFER_ERROR_CB_ID, testDMACallback);
     if (HAL_DMA_Init(&hdma_usart2_tx) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
@@ -331,6 +335,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     //hdma_usart6_rx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
     //hdma_usart6_rx.Init.MemBurst = DMA_MBURST_SINGLE;
     //hdma_usart6_rx.Init.PeriphBurst = DMA_PBURST_SINGLE;
+	HAL_DMA_RegisterCallback(&hdma_usart6_rx, HAL_DMA_XFER_ERROR_CB_ID, testDMACallback);
     if (HAL_DMA_Init(&hdma_usart6_rx) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
@@ -352,6 +357,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     //hdma_usart6_tx.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
     //hdma_usart6_tx.Init.MemBurst = DMA_MBURST_SINGLE;
     //hdma_usart6_tx.Init.PeriphBurst = DMA_PBURST_SINGLE;
+	HAL_DMA_RegisterCallback(&hdma_usart6_tx, HAL_DMA_XFER_ERROR_CB_ID, testDMACallback);
     if (HAL_DMA_Init(&hdma_usart6_tx) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
@@ -424,7 +430,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
 }
 
 /* USER CODE BEGIN 1 */
-
+static void testDMACallback(DMA_HandleTypeDef *DmaHandle)
+{
+	while(1);
+}
 /* USER CODE END 1 */
 
 /**

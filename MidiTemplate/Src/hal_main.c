@@ -53,7 +53,8 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-
+uint16_t adcValues[6];
+uint16_t adcIndex = 0;
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -85,6 +86,12 @@ void HAL_SYSTICK_Callback(void)
 };
 
 /* USER CODE BEGIN 0 */
+void convertADC(void)
+{
+	adcIndex = 0;
+	HAL_ADC_Start_IT(&hadc1);
+};
+
 int millis()
 {
 	return SYSTICK_VALUE;
@@ -218,6 +225,7 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
+
 /* ADC1 init function */
 static void MX_ADC1_Init(void)
 {
@@ -229,13 +237,13 @@ static void MX_ADC1_Init(void)
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = DISABLE;
+  hadc1.Init.ScanConvMode = ENABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 3;
   hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
@@ -247,14 +255,55 @@ static void MX_ADC1_Init(void)
     */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+  sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
 
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = 2;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = 3;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+	
+//	for (volatile int i = 0; i < 0xEFFF; i++);
+
+	adcIndex = 0;
+	adcValues[3] = 0;
+	HAL_ADC_Start_IT(&hadc1);
+    
 }
 
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* AdcHandle)
+{
+	/* Get the converted value of regular channel */
+	adcValues[adcIndex] = HAL_ADC_GetValue(AdcHandle);
+
+	adcIndex++;
+	if(adcIndex > 2)
+	{
+		adcIndex = 0;
+	}
+	adcValues[3]++;
+}
+
+void HAL_ADC_ErrorCallback(ADC_HandleTypeDef* AdcHandle)
+{
+	//while(1);
+}
 uint8_t myData[] = {0x1,0x2,0x4,0x8,0x10,0x20,0x40,0x80,0xFF};
 /* SPI1 init function */
 static void MX_SPI1_Init(void)

@@ -48,5 +48,5 @@ ArduinoAnalogIn::ArduinoAnalogIn( int inputPin )
 
 void ArduinoAnalogIn::readHardware( void )
 {
-	*(uint16_t *)localData.data = analogRead( pin );
+	*(uint16_t *)localData.data = analogRead( pin ) >> 2;
 };

@@ -39,6 +39,10 @@ private:
 	Led led3;
 	Led led4;
 	Led ledPlay;
+	
+	Windowed10BitKnob knob1;
+	Windowed10BitKnob knob3;
+	Windowed10BitKnob knobTempo;
 
 	//  ..and data
 	uint8_t held;

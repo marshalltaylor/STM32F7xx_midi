@@ -161,10 +161,10 @@ void DMA1_Stream6_IRQHandler( void )
 	isr_break(27);
 }
 
-void ADC_IRQHandler( void )
-{
-	isr_break(28);
-}
+//void ADC_IRQHandler( void )
+//{
+//	isr_break(28);
+//}
 
 void CAN1_TX_IRQHandler( void )
 {

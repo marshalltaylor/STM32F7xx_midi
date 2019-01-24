@@ -240,4 +240,5 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
 		}
 		UartHandle->ErrorCode &= ~HAL_UART_ERROR_DMA;
 	}
+	while(1);
 }

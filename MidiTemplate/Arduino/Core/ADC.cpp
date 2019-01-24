@@ -18,7 +18,7 @@
 
 #include "Arduino.h"
 //#include "PinConfigured.h"
-
+extern uint16_t adcValues[6];
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -53,6 +53,9 @@ extern "C" {
 uint32_t analogRead(uint32_t ulPin)
 {
   uint32_t value = 0;
+  if(ulPin == A0) value = adcValues[0];
+  if(ulPin == A1) value = adcValues[1];
+  if(ulPin == A2) value = adcValues[2];
 //  PinName p = analogInputToPinName(ulPin);
 //  if(p != NC) {
 //    value = adc_read_value(p);

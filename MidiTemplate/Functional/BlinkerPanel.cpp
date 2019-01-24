@@ -35,7 +35,17 @@ BlinkerPanel::BlinkerPanel( void )
 	add( &led4 );
 	ledPlay.setHardware(new ArduinoDigitalOut( D34 ), 1);
 	add( &ledPlay );
-	
+
+	knob1.setHardware(new ArduinoAnalogIn( A1 ));
+	add( &knob1 );
+	knob3.setHardware(new ArduinoAnalogIn( A0 ));
+	add( &knob3 );
+	knobTempo.setHardware(new ArduinoAnalogIn( A2 ));
+	add( &knobTempo );
+	knobTempo.setLowerKnobVal(10);
+	knobTempo.setUpperKnobVal(1014);
+	knobTempo.setLowerIntVal(40);
+	knobTempo.setUpperIntVal(208);
 	state = PInit;
 	held = 0;
 }
@@ -127,6 +137,32 @@ void BlinkerPanel::tickStateMachine( int msTicksDelta )
 	else
 	{
 		ledPlay.setState(LEDOFF);
+	}
+	
+	if( knob1.serviceChanged() )
+	{
+		Serial6.print("knob1: ");
+		Serial6.println(knob1.getState());
+		Serial6.println(analogRead(A1));
+		
+	}
+	if( knob3.serviceChanged() )
+	{
+		Serial6.print("knob3: ");
+		Serial6.println(knob3.getState());
+		Serial6.println(analogRead(A2));
+	}
+	if( knobTempo.serviceChanged() )
+	{
+		Serial6.print("knobTempo: ");
+		Serial6.println(knobTempo.getState());
+		char buffer[3];
+		sprintf( buffer, "%3d", knobTempo.getAsInt16() );
+		displayDrawValue(buffer);
+		displayTransmitFrame();		
+		Serial6.println(analogRead(A2));
+
+
 	}
 	char buffer[3];
 	sprintf( buffer, "%3d", 666 );
